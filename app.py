@@ -5,7 +5,6 @@ import os
 import time
 import re
 import sys
-import pyttsx3
 
 pathname = os.path.dirname(sys.argv[0])
 
@@ -14,17 +13,15 @@ print('sys.argv[0] =', sys.argv[0], "pathname", pathname)
 # Load the model
 model = load_model(f'{pathname}/model.savedmodel')
 
-# CAMERA can be 0 or 1 based on default camera of your computer.
-
 
 # Grab the labels from the labels.txt file. This will be used later.
 labels = open(f'{pathname}/labels.txt', 'r').readlines()
 
-engine = pyttsx3.init()
 
 while True:
     time.sleep(5)
 
+    # CAMERA can be 0 or 1 based on default camera of your computer.
     camera = cv2.VideoCapture(0)
     # Grab the webcameras image.
     ret, image = camera.read()
@@ -49,11 +46,7 @@ while True:
     print (label, f"proba: {max_prob}")
     if label != "empty" and max_prob > 0.9:
         
-        #os.system(f"cd voice && {label}.mp3")
-        
         os.system(f"festival --tts {pathname}/voice/{label}.txt")
-        #engine.say(f"{label}")
-        #engine.runAndWait()
 
     # Listen to the keyboard for presses.
     keyboard_input = cv2.waitKey(1)
